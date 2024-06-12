@@ -1,0 +1,20 @@
+Emmy, Black, F, 15, Friendly, Yes
+Oscar, Tuxedo, M, 22, Friendly, True
+Sneaky, Oriental, F, 9, Snooty, False
+Logan, Brown Tabby, M, 12, Playful, True
+Arti, Calico, F, 13, Affectionate, True
+Red, Orange Tabby, M, 10, Clingy, True
+Orange, Calico, F, 18, Glutton, True
+Starlow, Orange Tabby, F, 14, Playful, True
+Turtle, Tortoiseshell, F, 8, Lazy, False
+Blue, Gray, M, 10, Calm, False
+Purrington, Tuxedo, M, 9, Dignified, True
+Molly, White, F, 9, Sweet, True
+Garfield, Orange Tabby, M, 18, Glutton, True
+Mustafa, Tuxedo, M, 10, Dominant, True
+Alfredo, White, M, 10, Lazy, True
+Tama, White, F, 12, Forgiving, True
+Meatball, Brown Tabby, M, 11, Glutton, True
+Tuna, Tuxedo, M, 10, Playful, True
+Belle, Tortoiseshell, F, 9, Friendly, True
+Cookie, Calico, F, 18, Glutton, True
