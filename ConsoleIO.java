@@ -29,7 +29,8 @@ public class ConsoleIO {
                 "\n7. Display Cats" +
                 "\n8. Quit");
         String response = input.nextLine();
-        if(!response.isEmpty()) {
+        if(response.length() == 1) {
+            System.out.println("Selecting option " + response.charAt(0));
             return response.charAt(0);
         }
         return 'f';
