@@ -79,7 +79,7 @@ public class FileIO {
         //the option chosen
         //Takes no arguments
         //Returns nothing
-        fc.setFileSelectionMode(0);
+        System.out.println("File chooser opened in a new window.");
         int option = fc.showOpenDialog(null);
         if(option == 0) {
             String result = fc.getSelectedFile().getPath();
@@ -93,5 +93,7 @@ public class FileIO {
         }
         return option;
     }
+    public static boolean isShowing() {
+        return fc.isShowing();
+    }
 }
-
