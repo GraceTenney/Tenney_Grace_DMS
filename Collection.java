@@ -114,7 +114,7 @@ public class Collection {
                     case 'T', 'Y' -> true;
                     default -> false;
                 };
-                Cat catToAdd = new Cat(iterator, cattributes[0], cattributes[1], cattributes[2].trim().charAt(0), weight, cattributes[4], chipped);
+                Cat catToAdd = new Cat(iterator, cattributes[0].trim(), cattributes[1].trim(), cattributes[2].trim().charAt(0), weight, cattributes[4].trim(), chipped);
                 if(this.collection.add(catToAdd))
                     iterator++;
             } else {
