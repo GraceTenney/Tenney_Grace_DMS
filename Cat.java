@@ -50,13 +50,19 @@ public class Cat {
                 "\nOther: Continue").toUpperCase().charAt(0);
         switch (choiceAttribute) {
             case '1', 'N':
-                this.setName(ConsoleIO.getInput("Enter new name: "));
+                String name = ConsoleIO.getInput("Enter new name: ");
+                if(name != null)
+                    this.setName(name);
                 break;
             case '2':
-                this.setColoring(ConsoleIO.getInput("Enter new color: "));
+                String coloring = ConsoleIO.getInput("Enter new color: ");
+                if(coloring != null)
+                    this.setColoring(coloring);
                 break;
             case '3', 'G':
-                this.setGender(ConsoleIO.getInput("Set new gender: ").charAt(0));
+                String gender = ConsoleIO.getInput("Set new gender: ");
+                if(gender != null)
+                    this.setGender(gender.charAt(0));
                 break;
             case '4', 'W':
                 this.setWeight(ConsoleIO.getDouble("Set new weight: "));
@@ -84,7 +90,8 @@ public class Cat {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(name != null)
+            this.name = name;
     }
 
     public String getColoring() {
@@ -92,7 +99,8 @@ public class Cat {
     }
 
     public void setColoring(String coloring) {
-        this.coloring = coloring;
+        if(coloring != null)
+            this.coloring = coloring;
     }
 
     public char getGender() {
