@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.Scanner;
 /*
 Grace Tenney
@@ -19,7 +20,8 @@ public class ConsoleIO {
         //Creates the menu
         //Takes no arguments
         //Returns a char
-        System.out.println("Choose one:\n1. Upload text file library" +
+        String response = " ";
+        response = JOptionPane.showInputDialog("Choose one:\n1. Upload text file library" +
                 "\n--Cats are formatted like so:\nName, Coloring, Gender (M/F), Weight, Disposition, Chipped (True or False)\n1, Emmy, Black, F, 15, Friendly, True\netc..." +
                 "\n2. Add Cat" +
                 "\n3. Select Cat" +
@@ -28,12 +30,29 @@ public class ConsoleIO {
                 "\n6. Modify Cat" +
                 "\n7. Display Cats" +
                 "\n8. Quit");
-        String response = input.nextLine();
-        if(response.length() == 1) {
+        //String response = input.nextLine();
+        if(response != null && response.length() == 1) {
             System.out.println("Selecting option " + response.charAt(0));
             return response.charAt(0);
+        } else if(response == null) {
+            return '8';
         }
         return 'f';
+    }
+    public static void message(String message) {
+        JOptionPane.showMessageDialog(null, message);
+    }
+    public static void display(String message) {
+        JTextArea textArea = new JTextArea(6, 25);
+        textArea.setText(message);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize( null );
+        JOptionPane.showMessageDialog(null, scrollPane, "Cat Cafe Database",
+                JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null, message);
     }
 
     /**
@@ -49,14 +68,16 @@ public class ConsoleIO {
         int result = 0;
         boolean badInput = true;
         while(badInput) {
-            System.out.println(mess);
-            String output = input.nextLine();
+            String output = JOptionPane.showInputDialog(mess);
+            //String output = input.nextLine();
             try {
-                result = Integer.parseInt(output);
-                System.out.println(result);
-                badInput = false;
+                if(output != null) {
+                    result = Integer.parseInt(output);
+                    //System.out.println(result);
+                    badInput = false;
+                }
             } catch (NumberFormatException nfe) {
-                System.out.println("Input must be an integer.");
+                JOptionPane.showMessageDialog(null, "Input must be an integer.");
             }
         }
         return result;
@@ -71,12 +92,12 @@ public class ConsoleIO {
         String result = " ";
         boolean badInput = true;
         while (badInput) {
-            System.out.println(mess);
-            result = input.nextLine();
-            if (!result.isEmpty()) {
+            result = JOptionPane.showInputDialog(mess);
+            //result = input.nextLine();
+            if (result != null && !result.isEmpty()) {
                 badInput = false;
             } else
-                result = " ";
+                result = null;
         }
         return result;
     }
@@ -91,13 +112,15 @@ public class ConsoleIO {
         String response = "";
         boolean badInput = true;
         while(badInput) {
-            System.out.println(mess);
-            response = input.nextLine();
+            response = JOptionPane.showInputDialog(mess);
+            //response = input.nextLine();
             try {
-                result = Double.parseDouble(response);
-                badInput = false;
+                if(response != null) {
+                    result = Double.parseDouble(response);
+                    badInput = false;
+                }
             } catch (NumberFormatException nfe) {
-                System.out.println("Input must be a number.");
+                JOptionPane.showMessageDialog(null,"Input must be a number.");
             }
         }
         return result;
