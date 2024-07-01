@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /*
 Grace Tenney
 CEN-3024C-31950
@@ -22,57 +24,71 @@ public class Main {
                     case '1':
                         if (FileIO.chooseFile() != 1)
                             cats.upload();
-                        System.out.println(cats);
+                        //System.out.println(cats);
+                        ConsoleIO.message(cats.getCollection().size() + " cats are in the database.");
                         break;
                     case '2':
                         cats.add(new Cat());
-                        System.out.println(cats);
+                        //System.out.println(cats);
                         break;
                     case '3':
                         Cat match = cats.select(ConsoleIO.getInput("Enter name of cat to select: "));
                         if (match != null) {
-                            char choiceAction = ConsoleIO.getInput("[M]odify\n[R]emove\nOther: Continue").toUpperCase().charAt(0);
+                            char choiceAction = ConsoleIO.getInput(match + "\n[M]odify\n[R]emove\nOther: Continue").toUpperCase().charAt(0);
                             switch (choiceAction) {
                                 case 'M':
-                                    System.out.println(match.getId() + " id of cat");
-                                    cats.findById(match.getId()).modify();
+                                    //System.out.println(match.getId() + " id of cat");
+                                    Cat selectedCatToModify = cats.findById(match.getId());
+                                    selectedCatToModify.modify();
+                                    ConsoleIO.message(selectedCatToModify.toString());
                                     break;
                                 case 'R':
                                     cats.removeById(match.getId());
+                                    ConsoleIO.message("Successfully removed cat.");
                                     break;
                                 default:
                                     break;
                             }
                         }
-                        System.out.println(cats);
+                        //System.out.println(cats);
                         break;
                     case '4':
                         Cat catToRemove = cats.select(ConsoleIO.getInput("Enter name of cat to remove: "));
-                        if (catToRemove != null)
-                            cats.removeById(catToRemove.getId());
-                        System.out.println(cats);
+                        if (catToRemove != null) {
+                            if (cats.removeById(catToRemove.getId()))
+                                ConsoleIO.message(catToRemove + "\nCat removed succesfully.");
+                            else
+                                ConsoleIO.message("No cat was removed.");
+                        }
+                        //System.out.println(cats);
                         break;
                     case '5':
-                        if (cats.removeById(ConsoleIO.getInt("Enter id of cat to remove: ")))
-                            System.out.println("Cat removed successfully");
+                        int catIdToRemove = ConsoleIO.getInt("Enter id of cat to remove: ");
+                        Cat removedCat = cats.findById(catIdToRemove);
+                        if (cats.removeById(catIdToRemove))
+                            ConsoleIO.message(removedCat + "\nCat removed successfully");
                         else
-                            System.out.println("No cat removed.");
-                        System.out.println(cats);
+                            ConsoleIO.message("No cat removed.");
+                        //System.out.println(cats);
                         break;
                     case '6':
                         Cat catToModify = cats.select(ConsoleIO.getInput("Enter name of cat to select: "));
-                        if (catToModify != null)
+                        if (catToModify != null) {
                             cats.findById(catToModify.getId()).modify();
-                        System.out.println(cats);
+                            ConsoleIO.message(catToModify.toString());
+                        }
+                        //System.out.println(cats);
                         break;
                     case '7':
-                        System.out.println(cats);
+                        ConsoleIO.display(cats.toString());
                         break;
                     case '8':
                         running = false;
+                        ConsoleIO.message("Goodbye!");
+                        System.exit(0);
                         break;
                     default:
-                        System.out.println("Invalid input.");
+                        ConsoleIO.message("Invalid input.");
                         break;
                 } //switch
             } // if
