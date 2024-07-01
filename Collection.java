@@ -13,10 +13,13 @@ public class Collection {
     /**
      * removeById - Removes a cat in the collection with a matching id.
      * @param id id of cat to remove.
+     * @return Whether a cat was removed.
      */
     public boolean removeById(int id) {
-        //Returns nothing
         return this.collection.removeIf(b -> b.getId() == id);
+    }
+    public ArrayList<Cat> getCollection() {
+        return collection;
     }
 
     /**
@@ -59,7 +62,7 @@ public class Collection {
         boolean badInput = true;
         if(matches.size() > 1) {
             while(badInput) {
-                int id = ConsoleIO.getInt("Enter id of cat to select: ");
+                int id = ConsoleIO.getInt(matches + "Enter id of cat to select: ");
                 for (Cat c : matches) {
                     if (c.getId() == id) {
                         result = c;
@@ -68,13 +71,13 @@ public class Collection {
                     }
                 }
                 if(badInput)
-                    System.out.println("Id does not match presented ids.");
+                    ConsoleIO.message("Id does not match presented ids.");
             }
 
         } else if(matches.size() == 1) {
             result = matches.get(0);
         } else {
-            System.out.println("No cat found.");
+            ConsoleIO.message("No cat found.");
         }
         return result;
     }
@@ -88,6 +91,7 @@ public class Collection {
         cat.setId(iterator);
         collection.add(cat);
         iterator++;
+        ConsoleIO.message("Added cat: \n" + cat);
     }
     /**
      * upload - uploads file from FileIO to the collection
