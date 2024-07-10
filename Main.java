@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.Console;
 
 /*
 Grace Tenney
@@ -15,21 +16,27 @@ public class Main {
     public static void main(String[] args) {
         FileIO.initialize();
         Collection cats = new Collection();
-        cats.upload();
         boolean running = true;
         while(running) {
+            if (DBHelper.getDATABASE_NAME() == null) {
+                boolean badInput = true;
+                while (badInput) {
+                    if(FileIO.chooseDatabase() != 1) {
+                        DBHelper.setDATABASE_NAME(String.valueOf(FileIO.fc.getSelectedFile()));
+                        badInput = false;
+                    }
+                }
+
+            }
             char choice = ConsoleIO.menu();
             if (!FileIO.isShowing()) {
                 switch (choice) {
                     case '1':
                         if (FileIO.chooseFile() != 1)
                             cats.upload();
-                        //System.out.println(cats);
-                        ConsoleIO.message(cats.getCollection().size() + " cats are in the database.");
                         break;
                     case '2':
                         cats.add(new Cat());
-                        //System.out.println(cats);
                         break;
                     case '3':
                         Cat match = cats.select(ConsoleIO.getInput("Enter name of cat to select: "));
@@ -37,10 +44,10 @@ public class Main {
                             char choiceAction = ConsoleIO.getInput(match + "\n[M]odify\n[R]emove\nOther: Continue").toUpperCase().charAt(0);
                             switch (choiceAction) {
                                 case 'M':
-                                    //System.out.println(match.getId() + " id of cat");
                                     Cat selectedCatToModify = cats.findById(match.getId());
-                                    selectedCatToModify.modify();
-                                    ConsoleIO.message(selectedCatToModify.toString());
+                                    System.out.println(selectedCatToModify.getId());
+                                    Collection.modify(selectedCatToModify);
+                                    ConsoleIO.message(cats.findById(match.getId()).toString());
                                     break;
                                 case 'R':
                                     cats.removeById(match.getId());
@@ -50,7 +57,6 @@ public class Main {
                                     break;
                             }
                         }
-                        //System.out.println(cats);
                         break;
                     case '4':
                         Cat catToRemove = cats.select(ConsoleIO.getInput("Enter name of cat to remove: "));
@@ -60,7 +66,6 @@ public class Main {
                             else
                                 ConsoleIO.message("No cat was removed.");
                         }
-                        //System.out.println(cats);
                         break;
                     case '5':
                         int catIdToRemove = ConsoleIO.getInt("Enter id of cat to remove: ");
@@ -69,15 +74,13 @@ public class Main {
                             ConsoleIO.message(removedCat + "\nCat removed successfully");
                         else
                             ConsoleIO.message("No cat removed.");
-                        //System.out.println(cats);
                         break;
                     case '6':
                         Cat catToModify = cats.select(ConsoleIO.getInput("Enter name of cat to select: "));
                         if (catToModify != null) {
-                            cats.findById(catToModify.getId()).modify();
-                            ConsoleIO.message(catToModify.toString());
+                            Collection.modify(cats.findById(catToModify.getId()));
+                            ConsoleIO.message(cats.findById(catToModify.getId()).toString());
                         }
-                        //System.out.println(cats);
                         break;
                     case '7':
                         ConsoleIO.display(cats.toString());
