@@ -30,7 +30,6 @@ public class ConsoleIO {
                 "\n6. Modify Cat" +
                 "\n7. Display Cats" +
                 "\n8. Quit");
-        //String response = input.nextLine();
         if(response != null && response.length() == 1) {
             System.out.println("Selecting option " + response.charAt(0));
             return response.charAt(0);
@@ -39,9 +38,19 @@ public class ConsoleIO {
         }
         return 'f';
     }
+
+    /**
+     * message - displays a message in JOptionPane.
+     * @param message - String to display.
+     */
     public static void message(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
+
+    /**
+     * display - Displays a scrollable textbox of information.
+     * @param message - String to display.
+     */
     public static void display(String message) {
         JTextArea textArea = new JTextArea(6, 25);
         textArea.setText(message);
@@ -52,7 +61,6 @@ public class ConsoleIO {
         scrollPane.setPreferredSize( null );
         JOptionPane.showMessageDialog(null, scrollPane, "Cat Cafe Database",
                 JOptionPane.INFORMATION_MESSAGE);
-        //JOptionPane.showMessageDialog(null, message);
     }
 
     /**
@@ -69,11 +77,9 @@ public class ConsoleIO {
         boolean badInput = true;
         while(badInput) {
             String output = JOptionPane.showInputDialog(mess);
-            //String output = input.nextLine();
             try {
                 if(output != null) {
                     result = Integer.parseInt(output);
-                    //System.out.println(result);
                     badInput = false;
                 }
             } catch (NumberFormatException nfe) {
@@ -93,7 +99,6 @@ public class ConsoleIO {
         boolean badInput = true;
         while (badInput) {
             result = JOptionPane.showInputDialog(mess);
-            //result = input.nextLine();
             if (result != null && !result.isEmpty()) {
                 badInput = false;
             } else
@@ -113,7 +118,6 @@ public class ConsoleIO {
         boolean badInput = true;
         while(badInput) {
             response = JOptionPane.showInputDialog(mess);
-            //response = input.nextLine();
             try {
                 if(response != null) {
                     result = Double.parseDouble(response);
@@ -125,4 +129,6 @@ public class ConsoleIO {
         }
         return result;
     }
+}
+
 }
