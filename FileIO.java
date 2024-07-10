@@ -93,8 +93,24 @@ public class FileIO {
         }
         return option;
     }
+    public static int chooseDatabase() {
+        ConsoleIO.message("Select the database file to use.");
+        int option = fc.showOpenDialog(null);
+        if(option == 0) {
+            String result = fc.getSelectedFile().getPath();
+            if (result.substring(result.lastIndexOf("."), result.length()).equals(".db"))
+                file = fc.getSelectedFile();
+            else {
+                ConsoleIO.message("Incorrect file type, must be a db file.");
+                option = 1;
+            }
+            System.out.println(file);
+        }
+        return option;
+    }
     public static boolean isShowing() {
         return fc.isShowing();
     }
 }
+
 
