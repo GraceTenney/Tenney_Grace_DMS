@@ -1,167 +1,111 @@
-/*
-Grace Tenney
-CEN-3024C-31950
-6/12/2024
-Software Development
+mport javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
-This class creats Cat objects.
- */
-public class Cat {
-    private int id;
-    private String name;
-    private String coloring;
-    private char gender;
-    private double weight;
-    private String disposition;
-    private boolean chipped;
+public class Cats extends DBHelper {
+    private final String TABLE_NAME = "cats";
+    public static final String ID = "ID";
+    public static final String name = "name";
+    public static final String coloring = "coloring";
+    public static final String gender = "gender";
+    public static final String weight = "weight";
+    public static final String disposition = "disposition";
+    public static final String chipped = "chipped";
 
-    public Cat() {
-        setName(ConsoleIO.getInput("Enter the cat's name: "));
-        setColoring(ConsoleIO.getInput("Describe the cat's color: "));
-        setGender(ConsoleIO.getInput("Enter the cat's gender (M or F)").charAt(0));
-        setWeight(ConsoleIO.getDouble("Enter the cat's weight: "));
-        setDisposition(ConsoleIO.getInput("Describe the cat's attitude or personality: "));
-        setChipped(ConsoleIO.getInput("Does the cat have a microchip? Y/N or True or False"));
-    }
-
-    public Cat(int id, String name, String coloring, char gender, double weight, String disposition, boolean chipped) {
-        setId(id);
-        setName(name);
-        setColoring(coloring);
-        setGender(gender);
-        setWeight(weight);
-        setDisposition(disposition);
-        setChipped(chipped);
+    /**
+     * prepareSQL - prepares the tet of a SQL "select" command.
+     * @param fields - fields to be displayed in the output
+     * @param whatField - field to search for
+     * @param whatValue - value to search for within whatField
+     * @param sortField - use ASC or DESC to specify the sorting order
+     * @param sort - the field the data will be sorted by
+     * @return - String
+     */
+    private String prepareSQL(String fields, String whatField, String whatValue, String sortField, String sort) {
+        String query = "SELECT ";
+        query += fields == null ? " * FROM " + TABLE_NAME : fields + " FROM " + TABLE_NAME;
+        query += whatField != null && whatValue != null ? " WHERE " + whatField + " = \"" + whatValue + "\"" : "";
+        query += sort != null && sortField != null ? " order by " + sortField + " " + sort : "";
+        return query;
     }
 
     /**
-     * modify - Prompts the user to modify a Cat.
+     * insert - insert a new record into the database.
+     * @param name - name of Cat
+     * @param coloring - coloring of Cat
+     * @param gender - gender of Cat
+     * @param weight - weight of Cat
+     * @param disposition - disposition of Cat
+     * @param chipped - whether Cat is microchipped
      */
-    public void modify() {
-        //takes no arguments
-        //returns nothing
-        char choiceAttribute = ConsoleIO.getInput("Select attribute to modify: " +
-                "\n1. Name" +
-                "\n2. Coloring" +
-                "\n3. Gender" +
-                "\n4. Weight" +
-                "\n5. Disposition" +
-                "\n6. Chipped" +
-                "\nOther: Continue").toUpperCase().charAt(0);
-        switch (choiceAttribute) {
-            case '1', 'N':
-                String name = ConsoleIO.getInput("Enter new name: ");
-                if(name != null)
-                    this.setName(name);
-                break;
-            case '2':
-                String coloring = ConsoleIO.getInput("Enter new color: ");
-                if(coloring != null)
-                    this.setColoring(coloring);
-                break;
-            case '3', 'G':
-                String gender = ConsoleIO.getInput("Set new gender: ");
-                if(gender != null)
-                    this.setGender(gender.charAt(0));
-                break;
-            case '4', 'W':
-                this.setWeight(ConsoleIO.getDouble("Set new weight: "));
-                break;
-            case '5', 'D':
-                this.setDisposition(ConsoleIO.getInput("Enter new name: "));
-                break;
-            case '6':
-                this.setChipped(ConsoleIO.getInput("Enter new value [T/F]: "));
-                break;
+    public void insert(String name, String coloring, String gender, Double weight, String disposition, Boolean chipped) {
+        name = name != null ? "\"" + name + "\"" : null;
+        coloring = coloring != null ? "\"" + coloring + "\"" : null;
+        gender = gender != null ? "\"" + gender + "\"" : null;
+        disposition = disposition != null ? "\"" + disposition + "\"" : null;
+        int assignChipped = 0;
+        if(chipped)
+            assignChipped = 1;
+
+        Object[] values_ar = {name, coloring, gender, weight, disposition, assignChipped};
+        String[] fields_ar = {Cats.name, Cats.coloring, Cats.gender, Cats.weight, Cats.disposition, Cats.chipped};
+        String values = "", fields = "";
+        for (int i = 0; i < values_ar.length; i++) {
+            if (values_ar[i] != null) {
+                values += values_ar[i] + ", ";
+                fields += fields_ar[i] + ", ";
+            }
+        }
+        if (!values.isEmpty()) {
+            values = values.substring(0, values.length() - 2);
+            fields = fields.substring(0, fields.length() - 2);
+            super.execute("INSERT INTO " + TABLE_NAME + "(" + fields + ") values(" + values + ");");
         }
     }
 
-
-    public int getId() {
-        return id;
+    /**
+     * delete - remove a record from the database.
+     * @param whatField - the field used to determine if a row should be deleted
+     * @param whatValue - value of the row to be removed
+     */
+    public void delete(String whatField, String whatValue) {
+        super.execute("DELETE from " + TABLE_NAME + " where " + whatField + " = " + whatValue + ";");
     }
 
-    public void setId(int id) {
-        this.id = id;
+    /**
+     * update - update a record in the database.
+     * @param whatField - field to be updated
+     * @param whatValue - value to update to
+     * @param whereField - conditional field determining whether to update
+     * @param whereValue - conditional value determining whether to update
+     */
+    public void update(String whatField, String whatValue, String whereField, String whereValue) {
+        super.execute("UPDATE " + TABLE_NAME + " set " + whatField + " = \"" + whatValue + "\" where " + whereField + " = \"" + whereValue + "\";");
     }
 
-    public String getName() {
-        return name;
+    /**
+     * select - completes a SQL "select" command
+     * @param fields - fields to be displayed in the output
+     * @param whatField - field to search within
+     * @param whatValue - value to search for within whatField
+     * @param sortField - use ASC or DESC to specify sorting order
+     * @param sort - field that data will be sorted by
+     * @return ArrayList<ArrayList<Object>> - a 2D array of Objects.
+     */
+    public ArrayList<ArrayList<Object>> select(String fields, String whatField, String whatValue, String sortField, String sort) {
+        return super.executeQuery(prepareSQL(fields, whatField, whatValue, sortField, sort));
+    }
+    public ArrayList<ArrayList<Object>> getExecuteResult(String query) {
+        return super.executeQuery(query);
     }
 
-    public void setName(String name) {
-        if(name != null)
-            this.name = name;
+    /**
+     * execute - performs a SQL command
+     * @param query - the String that is sent as a SQL command
+     */
+    public void execute(String query) {
+        super.execute(query);
     }
-
-    public String getColoring() {
-        return coloring;
-    }
-
-    public void setColoring(String coloring) {
-        if(coloring != null)
-            this.coloring = coloring;
-    }
-
-    public char getGender() {
-        return gender;
-    }
-
-    public void setGender(char gender) {
-        gender = Character.toUpperCase(gender);
-        switch(gender) {
-            case 'F', 'M':
-                this.gender = gender;
-                break;
-            default:
-                this.gender = 'N';
-        }
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public String getDisposition() {
-        return disposition;
-    }
-
-    public void setDisposition(String disposition) {
-        this.disposition = disposition;
-    }
-
-    public boolean isChipped() {
-        return chipped;
-    }
-
-    public void setChipped(boolean chipped) {
-        this.chipped = chipped;
-    }
-
-    public void setChipped(String value) {
-        switch(value.toUpperCase().charAt(0)) {
-            case 'T', 'Y':
-                this.chipped = true;
-                break;
-            default:
-                this.chipped = false;
-                break;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return
-                "\nid: " + id +
-                "\nname: " + name +
-                "\ncoloring: " + coloring +
-                "\ngender: " + gender +
-                "\nweight: " + weight +
-                "\ndisposition: " + disposition +
-                "\nchipped: " + chipped + "\n";
+    public DefaultTableModel selectToTable(String fields, String whatField, String whatValue, String sortField, String sort) {
+        return super.executeQueryToTable(prepareSQL(fields, whatField, whatValue, sortField, sort));
     }
 }
