@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.io.Console;
-
 /*
 Grace Tenney
 CEN-3024C-31950
