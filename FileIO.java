@@ -68,7 +68,7 @@ public class FileIO {
     }
 
     /**
-     * chooseFile - Opens a file chooser for the user using JFileChooser
+     * chooseFile - Opens a file chooser for the user using JFileChooser. Limited to .txt files.
      * @return the return state of the file chooser on popdown from 1-3:
      * <ul><li>CANCEL</li>
      * <li>APPROVE</li><li>ERROR</li></ul>
@@ -93,6 +93,13 @@ public class FileIO {
         }
         return option;
     }
+
+    /**
+     * chooseDatabase - Opens a file chooser using JFileChooser. Limited to .db files.
+     * @return - the return state of the file chooser on popdown from 1-3
+     * <ul><li>CANCEL</li>
+     * <li>APPROVE</li><li>ERROR</li></ul>
+     */
     public static int chooseDatabase() {
         ConsoleIO.message("Select the database file to use.");
         int option = fc.showOpenDialog(null);
@@ -112,5 +119,3 @@ public class FileIO {
         return fc.isShowing();
     }
 }
-
-
